@@ -23,8 +23,9 @@ class Renderer
         }
 
         // Now arrived at topmost template (no parent)
-
+        $ctx->_setOutputMode(true);
         $closure = $currentTemplate->getClosure();
+
         return $closure($ctx);
     }
 

@@ -11,6 +11,8 @@ class ViewContext implements ArrayAccess
     /** @var array */
     private $data;
 
+    private $outputBlocks = false;
+
     /**
      * @param array $data View variables
      */
@@ -30,15 +32,24 @@ class ViewContext implements ArrayAccess
             $this->blocks[$name] = $content;
         }
 
-        ob_start();
-        $theContent = $this->blocks[$name];
-        if ($theContent instanceof Closure) {
-            $theContent($this);
-        } else {
-            echo $theContent;
-        }
+        if ($this->outputBlocks) {
+            ob_start();
+            $theContent = $this->blocks[$name];
+            if ($theContent instanceof Closure) {
+                $theContent($this);
+            } else {
+                echo $theContent;
+            }
 
-        return ob_get_clean();
+            return ob_get_clean();
+        } else {
+            return null;
+        }
+    }
+
+    public function _setOutputMode($mode)
+    {
+        $this->outputBlocks = $mode;
     }
 
     /**
