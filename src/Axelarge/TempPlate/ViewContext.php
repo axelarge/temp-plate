@@ -2,22 +2,30 @@
 namespace Axelarge\TempPlate;
 
 use Closure;
+use InvalidArgumentException;
 use ArrayAccess;
 
 class ViewContext implements ArrayAccess
 {
     /** @var array */
     private $blocks = array();
+    private $blockSources = array();
+
     /** @var array */
     private $data;
+    private $engine;
+    /** @var MacroProxy */
+    private $macro;
 
     private $outputBlocks = false;
 
     /**
+     * @param Engine $engine
      * @param array $data View variables
      */
-    public function __construct(array $data = array())
+    public function __construct(Engine $engine, array $data)
     {
+        $this->engine = $engine;
         $this->data = $data;
     }
 
@@ -30,16 +38,20 @@ class ViewContext implements ArrayAccess
     {
         if (!isset($this->blocks[$name])) {
             $this->blocks[$name] = $content;
+            $this->blockSources[$name] = $this->macro;
         }
 
         if ($this->outputBlocks) {
             ob_start();
             $theContent = $this->blocks[$name];
+            $prevMacro = $this->macro;
+            $this->macro = $this->blockSources[$name];
             if ($theContent instanceof Closure) {
                 $theContent($this);
             } else {
                 echo $theContent;
             }
+            $this->macro = $prevMacro;
 
             return ob_get_clean();
         } else {
@@ -47,9 +59,13 @@ class ViewContext implements ArrayAccess
         }
     }
 
-    public function _setOutputMode($mode)
+    public function _setCurrentTemplate(Template $template)
     {
-        $this->outputBlocks = $mode;
+        $this->macro = new MacroProxy($this, $this->engine);
+        foreach ($template->getImports() as $import) {
+            $this->macro->import($import[0], $import[1]);
+        }
+        $this->outputBlocks = !$template->hasParent();
     }
 
     /**
@@ -84,5 +100,13 @@ class ViewContext implements ArrayAccess
     public function offsetUnset($offset)
     {
         unset($this->data[$offset]);
+    }
+
+    public function __get($name)
+    {
+        if ($name === 'macro') {
+            return $this->macro;
+        }
+        throw new InvalidArgumentException("Property $name does not exist");
     }
 }

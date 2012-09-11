@@ -9,6 +9,9 @@ class Template
     protected $closure;
     /** @var string */
     protected $parent;
+    /** @var Closure[] */
+    protected $macros = array();
+    protected $imports = array();
 
 
     public function __construct(Closure $closure, $parent = null)
@@ -43,5 +46,27 @@ class Template
     public function getParent()
     {
         return $this->parent;
+    }
+
+    public function addMacro($name, Closure $macro)
+    {
+        $this->macros[$name] = $macro;
+        return $this;
+    }
+
+    public function importFrom($sourceTemplate, $name = null)
+    {
+        $this->imports[] = array($sourceTemplate, $name);
+        return $this;
+    }
+
+    public function getMacros()
+    {
+        return $this->macros;
+    }
+
+    public function getImports()
+    {
+        return $this->imports;
     }
 }

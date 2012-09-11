@@ -13,17 +13,18 @@ class Renderer
 
     public function render(Template $template, array $context = array())
     {
-        $ctx = new ViewContext($context);
+        $ctx = new ViewContext($this->engine, $context);
 
         $currentTemplate = $template;
+        $ctx->_setCurrentTemplate($currentTemplate);
         while ($currentTemplate->hasParent()) {
             $closure = $currentTemplate->getClosure();
             $closure($ctx);
             $currentTemplate = $this->engine->getTemplate($currentTemplate->getParent());
+            $ctx->_setCurrentTemplate($currentTemplate);
         }
 
         // Now arrived at topmost template (no parent)
-        $ctx->_setOutputMode(true);
         $closure = $currentTemplate->getClosure();
 
         return $closure($ctx);
