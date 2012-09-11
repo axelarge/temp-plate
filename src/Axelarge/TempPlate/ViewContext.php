@@ -109,4 +109,11 @@ class ViewContext implements ArrayAccess
         }
         throw new InvalidArgumentException("Property $name does not exist");
     }
+
+    public function macro($name)
+    {
+        $args = array_slice(func_get_args(), 1);
+        return call_user_func_array(array($this->macro, $name), $args);
+    }
+
 }

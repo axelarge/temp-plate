@@ -7,7 +7,7 @@ return Template::extend('2column', function (ViewContext $view) {
         hello i am overridden content and <?= $view->block('deep', 'deep stuff') ?>
 
         <p>
-            This is a macro: <?= $view->macro->input('email') ?>
+            This is a macro: <?= $view->macro('input', 'email') ?>
         </p>
 
     <?php });
