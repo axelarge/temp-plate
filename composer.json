@@ -1,0 +1,17 @@
+{
+    "name": "Axel/temp-plate",
+    "authors": [
+        {
+            "name": "Miķelis Vindavs",
+            "email": "mikelis.vindavs@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "": "src"
+        }
+    },
+    "require": {
+
+    }
+}
