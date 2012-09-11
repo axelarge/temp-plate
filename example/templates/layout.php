@@ -2,7 +2,7 @@
 use Axelarge\TempPlate\Template;
 use Axelarge\TempPlate\ViewContext;
 
-return new Template(function (ViewContext $view) { ?>
+return Template::create(function (ViewContext $view) { ?>
 <body>
 
 <div class="content" style="width: 1000px; margin: auto; overflow: auto; border: 1px solid black;">

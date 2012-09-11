@@ -2,7 +2,7 @@
 use Axelarge\TempPlate\Template;
 use Axelarge\TempPlate\ViewContext;
 
-return new Template(function (ViewContext $view) {
+return Template::extend('layout', function (ViewContext $view) {
     $view->block('content', function (ViewContext $view) { ?>
         <div style="width: 200px; float:left; border: 1px solid #ccc">
             <?= $view->block('sidebar', 'sidebar!') ?>
@@ -11,4 +11,4 @@ return new Template(function (ViewContext $view) {
             <?= $view->block('content-center', 'center content!') ?>
         </div>
     <?php });
-}, 'layout');
+});

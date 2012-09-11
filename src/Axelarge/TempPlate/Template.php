@@ -17,6 +17,16 @@ class Template
         $this->parent = $parent;
     }
 
+    public static function create(Closure $closure)
+    {
+        return new self($closure);
+    }
+
+    public static function extend($parentName, Closure $closure)
+    {
+        return new self($closure, $parentName);
+    }
+
     /**
      * @return Closure
      */
