@@ -10,6 +10,10 @@ return Template::extend('2column', function (ViewContext $view) {
             This is a macro: <?= $view->macro('input', 'email') ?>
         </p>
 
+            <p>
+                This is a partial:
+                <?= $view->render('partial') ?>
+            </p>
     <?php });
 })
 ->importFrom('2column');

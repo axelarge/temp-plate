@@ -14,6 +14,7 @@ class ViewContext implements ArrayAccess
     /** @var array */
     private $data;
     private $engine;
+    private $renderer;
     /** @var MacroProxy */
     private $macro;
 
@@ -23,9 +24,10 @@ class ViewContext implements ArrayAccess
      * @param Engine $engine
      * @param array $data View variables
      */
-    public function __construct(Engine $engine, array $data)
+    public function __construct(Engine $engine, Renderer $renderer, array $data)
     {
         $this->engine = $engine;
+        $this->renderer = $renderer;
         $this->data = $data;
     }
 
@@ -116,4 +118,8 @@ class ViewContext implements ArrayAccess
         return call_user_func_array(array($this->macro, $name), $args);
     }
 
+    public function render($name)
+    {
+        return $this->renderer->render($this->engine->getTemplate($name));
+    }
 }

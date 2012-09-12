@@ -13,7 +13,7 @@ class Renderer
 
     public function render(Template $template, array $context = array())
     {
-        $ctx = new ViewContext($this->engine, $context);
+        $ctx = new ViewContext($this->engine, $this, $context);
 
         $currentTemplate = $template;
         $ctx->_setCurrentTemplate($currentTemplate);
