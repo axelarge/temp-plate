@@ -36,7 +36,7 @@ class ViewContext implements ArrayAccess
      * @param Closure|string $content
      * @return string
      */
-    public function block($name, $content)
+    public function block($name, $content = '')
     {
         if (!isset($this->blocks[$name])) {
             $this->blocks[$name] = $content;
