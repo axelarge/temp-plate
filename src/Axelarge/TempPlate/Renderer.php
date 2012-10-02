@@ -27,7 +27,9 @@ class Renderer
         // Now arrived at topmost template (no parent)
         $closure = $currentTemplate->getClosure();
 
-        return $closure($ctx);
+        ob_start();
+        $closure($ctx);
+        return ob_get_clean();
     }
 
 }
