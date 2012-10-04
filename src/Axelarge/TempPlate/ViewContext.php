@@ -120,6 +120,6 @@ class ViewContext implements ArrayAccess
 
     public function render($name)
     {
-        return $this->renderer->render($this->engine->getTemplate($name));
+        return $this->renderer->render($this->engine->getTemplate($name), $this->data);
     }
 }
