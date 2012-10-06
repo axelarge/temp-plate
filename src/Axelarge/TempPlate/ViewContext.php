@@ -118,8 +118,8 @@ class ViewContext implements ArrayAccess
         return call_user_func_array(array($this->macro, $name), $args);
     }
 
-    public function render($name)
+    public function render($name, array $data = array())
     {
-        return $this->renderer->render($this->engine->getTemplate($name));
+        return $this->renderer->render($this->engine->getTemplate($name), array_merge($this->data, $data));
     }
 }
