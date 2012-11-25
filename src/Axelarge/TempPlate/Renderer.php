@@ -2,6 +2,7 @@
 namespace Axelarge\TempPlate;
 
 use Closure;
+use ReflectionClass;
 use ReflectionFunction;
 use ReflectionParameter;
 
@@ -12,6 +13,7 @@ class Renderer
 
     /** @var Environment */
     private $environment;
+    private $helpers = array();
 
 
     public function __construct(Environment $environment)
@@ -57,7 +59,11 @@ class Renderer
                 $args[] = $context;
             } else if ($reflectionClass->implementsInterface(self::HELPER_INTERFACE)) {
                 // Helper
-                $args[] = $reflectionClass->newInstance($context, $this->environment);
+                $className = $reflectionClass->getName();
+                if (!isset($this->helpers[$className])) {
+                    $this->helpers[$className] = $reflectionClass->newInstance($context, $this->environment);
+                }
+                $args[] =  $this->helpers[$className];
             } else {
                 throw new Exception("Don't know how to inject arg of class {$reflectionClass->getName()}");
             }
