@@ -4,20 +4,21 @@ namespace Axelarge\TempPlate;
 use Closure;
 use ArrayAccess;
 
-class ViewContext implements ArrayAccess
+final class ViewContext implements ArrayAccess
 {
-    /** @var array */
-    private $blocks = array();
-
     /** @var array */
     private $data;
     private $engine;
+    /** @var Renderer */
     private $renderer;
 
+    /** @var array */
+    private $blocks = array();
     private $outputBlocks = false;
 
     /**
      * @param Engine $engine
+     * @param Renderer $renderer
      * @param array $data View variables
      */
     public function __construct(Engine $engine, Renderer $renderer, array $data)
@@ -42,7 +43,7 @@ class ViewContext implements ArrayAccess
             ob_start();
             $theContent = $this->blocks[$name];
             if ($theContent instanceof Closure) {
-                $theContent($this);
+                $this->renderer->renderAndOutputClosure($theContent, $this);
             } else {
                 echo $theContent;
             }
@@ -53,13 +54,14 @@ class ViewContext implements ArrayAccess
         }
     }
 
-    public function _setCurrentTemplate(Template $template)
+    public function setOutputBlocks($outputBlocks)
     {
-        $this->outputBlocks = !$template->hasParent();
+        $this->outputBlocks = $outputBlocks;
     }
 
     /**
-     * @return boolean true
+     * @param mixed $offset
+     * @return boolean
      */
     public function offsetExists($offset)
     {
