@@ -11,7 +11,4 @@ return Template::extend('layout', function (ViewContext $view) {
             <?= $view->block('content-center', 'center content!') ?>
         </div>
     <?php });
-})
-->addMacro('input', function (ViewContext $view, $name, $value = '') { ?>
-    <input type="text" name="<?= $name ?>" value="<?= $value ?>">
-<?php });
+});
