@@ -2,9 +2,9 @@
 namespace Axelarge\TempPlate\Helpers;
 
 use Axelarge\TempPlate\ViewContext;
-use Axelarge\TempPlate\Engine;
+use Axelarge\TempPlate\Environment;
 
 interface HelperInterface
 {
-    public function __construct(ViewContext $viewContext, Engine $engine);
+    public function __construct(ViewContext $viewContext, Environment $environment);
 }

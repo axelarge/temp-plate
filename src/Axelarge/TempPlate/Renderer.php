@@ -10,24 +10,24 @@ class Renderer
     const VIEW_CONTEXT_CLASS = 'Axelarge\\TempPlate\\ViewContext';
     const HELPER_INTERFACE = 'Axelarge\\TempPlate\\Helpers\\HelperInterface';
 
-    /** @var Engine */
-    private $engine;
+    /** @var Environment */
+    private $environment;
 
 
-    public function __construct(Engine $engine)
+    public function __construct(Environment $environment)
     {
-        $this->engine = $engine;
+        $this->environment = $environment;
     }
 
     public function render(Template $template, array $data = array())
     {
-        $viewContext = new ViewContext($this->engine, $this, $data);
+        $viewContext = new ViewContext($this->environment, $this, $data);
 
         $currentTemplate = $template;
         while ($currentTemplate->hasParent()) {
             $viewContext->setOutputBlocks(false);
             $this->renderAndOutputClosure($currentTemplate->getClosure(), $viewContext);
-            $currentTemplate = $this->engine->getTemplate($currentTemplate->getParent());
+            $currentTemplate = $this->environment->getTemplate($currentTemplate->getParent());
         }
 
         // Now arrived at topmost template (no parent)
@@ -57,7 +57,7 @@ class Renderer
                 $args[] = $context;
             } else if ($reflectionClass->implementsInterface(self::HELPER_INTERFACE)) {
                 // Helper
-                $args[] = $reflectionClass->newInstance($context, $this->engine);
+                $args[] = $reflectionClass->newInstance($context, $this->environment);
             } else {
                 throw new Exception("Don't know how to inject arg of class {$reflectionClass->getName()}");
             }

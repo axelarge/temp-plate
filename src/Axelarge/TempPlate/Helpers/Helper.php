@@ -3,20 +3,20 @@ namespace Axelarge\TempPlate\Helpers;
 
 use ArrayAccess;
 use Axelarge\TempPlate\ViewContext;
-use Axelarge\TempPlate\Engine;
+use Axelarge\TempPlate\Environment;
 
 abstract class Helper implements HelperInterface, ArrayAccess
 {
     /** @var \Axelarge\TempPlate\ViewContext */
     protected $viewContext;
-    /** @var \Axelarge\TempPlate\Engine */
-    protected $engine;
+    /** @var \Axelarge\TempPlate\Environment */
+    protected $environment;
 
 
-    public function __construct(ViewContext $viewContext, Engine $engine)
+    public function __construct(ViewContext $viewContext, Environment $environment)
     {
         $this->viewContext = $viewContext;
-        $this->engine = $engine;
+        $this->environment = $environment;
     }
 
     //

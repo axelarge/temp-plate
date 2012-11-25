@@ -8,7 +8,7 @@ final class ViewContext implements ArrayAccess
 {
     /** @var array */
     private $data;
-    private $engine;
+    private $environment;
     /** @var Renderer */
     private $renderer;
 
@@ -17,13 +17,13 @@ final class ViewContext implements ArrayAccess
     private $outputBlocks = false;
 
     /**
-     * @param Engine $engine
+     * @param Environment $environment
      * @param Renderer $renderer
      * @param array $data View variables
      */
-    public function __construct(Engine $engine, Renderer $renderer, array $data)
+    public function __construct(Environment $environment, Renderer $renderer, array $data)
     {
-        $this->engine = $engine;
+        $this->environment = $environment;
         $this->renderer = $renderer;
         $this->data = $data;
     }
@@ -96,6 +96,6 @@ final class ViewContext implements ArrayAccess
 
     public function render($name, array $data = array())
     {
-        return $this->renderer->render($this->engine->getTemplate($name), array_merge($this->data, $data));
+        return $this->renderer->render($this->environment->getTemplate($name), array_merge($this->data, $data));
     }
 }

@@ -1,7 +1,7 @@
 <?php
 namespace Axelarge\TempPlate;
 
-class Engine
+class Environment
 {
     /** @var string */
     protected $basePath;
